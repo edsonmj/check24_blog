@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="header">
+        Blog Title
+        <hr />
+        <a href="{{ path('homepage') }}">[Overview]</a> - <a href="{{ path('new-entry') }}">[New Entry]</a> - <a href="{{ path('edit-imprint') }}">[Edit Imprint]</a> - <a href="{{ path('ip-blacklist') }}">[IP-Blacklist]</a> - <a href="{{ path('logout') }}">[Logout]</a>
+    </div>
+
+    <div class="content">
+        {% block message %}
+
+            {% for flashMessage in app.session.flashbag.get('error') %}
+
+                {{ flashMessage }}
+
+            {% endfor %}
+
+            <form action="/new-entry" method="Post">
+
+                Title: <input name="title" type="text" /> <br />
+
+                Content: <textarea name="content"></textarea> <br />
+
+                <button type="submit">Save</button>
+
+
+            </form>
+            
+
+        {% endblock %}
+    </div>
+
+    <div class="footer">
+        © 2017 - Imprint
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+    body { background: #F5F5F5; font: 18px/1.5 sans-serif; }
+    h1, h2 { line-height: 1.2; margin: 0 0 .5em; }
+    h1 { font-size: 36px; }
+    h2 { font-size: 21px; margin-bottom: 1em; }
+    header {text-align:center}
+    
+</style>
+{% endblock %}

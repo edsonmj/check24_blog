@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="header">
+        Blog Title
+        <hr />
+        Home -
+        {% if loggedUser == false %}
+            <a href="{{ path('login') }}">Login</a>
+        {% else %}
+           <a href="{{ path('admin') }}">Admin</a>
+        {% endif %}
+    </div>
+
+    <div class="content">
+        {% block message %}
+
+            
+            {% for post in Posts %}
+                <table border="1">
+                    <tr>
+                        <td> 
+                            {{ post.getInsertionDate() }} {{ post.getTitle() }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> 
+                            {{ post.getContent() }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> 
+                            {{ post.getAuthor().getName() }}
+                        </td>
+                    </tr>
+                </table>
+                <br />
+
+            {% endfor %}
+            
+
+        {% endblock %}
+    </div>
+
+    <div class="footer">
+        © 2017 - Imprint
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+    body { background: #F5F5F5; font: 18px/1.5 sans-serif; }
+    h1, h2 { line-height: 1.2; margin: 0 0 .5em; }
+    h1 { font-size: 36px; }
+    h2 { font-size: 21px; margin-bottom: 1em; }
+    header {text-align:center}
+    
+</style>
+{% endblock %}
