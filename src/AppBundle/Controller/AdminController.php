@@ -22,15 +22,22 @@ class AdminController extends Controller
     	$session = new Session();
 
         $loggedUser = $session->get('loggedUser');
+        $roleUser = $session->get('roleUser');
         if(empty($loggedUser)){
         	return $this->redirectToRoute('homepage');
         }
 
+
+        $filter = ['active' => true];
+        if($roleUser->getId() != 1){
+            $filter['createdUser'] = $loggedUser;
+        }
+
         $Posts = $this->getDoctrine()
                         ->getRepository(Posts::class)
-                        ->findBy(['active' => true], ['insertionDate' => 'DESC']);
+                        ->findBy($filter, ['insertionDate' => 'DESC']);
 
-        return $this->render('Admin/admin.html.twig', ['Posts' => $Posts]);
+        return $this->render('Admin/admin.html.twig', ['Posts' => $Posts, 'roleUser' => $roleUser->getId()]);
     }
 
     /**
@@ -78,7 +85,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/edit-entry/{id}", name="new-entry")
+     * @Route("/edit-entry/{id}", name="edit-entry")
      */
     public function editEntryAction($id, Request $request)
     {
@@ -96,9 +103,63 @@ class AdminController extends Controller
 
         $Post = $this->getDoctrine()
                         ->getRepository(Posts::class)
-                        ->findOneBy(['id' => $loggedUser]);
+                        ->findOneBy(['id' => $id]);
 
-        return $this->render('Admin/newEntry.html.twig', []);
+        $title = $request->request->get('title');
+        $content = $request->request->get('content');
+
+        
+
+        if(!empty($title) && !empty($content)){
+        	$entityManager = $this->getDoctrine()->getManager();
+
+        	$User = $this->getDoctrine()
+                        ->getRepository(Users::class)
+                        ->findOneBy(['id' => $loggedUser, 'active' => true]);
+
+	        $Post->setTitle($title);
+	        $Post->setContent($content);
+	        $Post->setAuthor($User);
+
+	        $Post->setUpdatedUser($User);
+	        $Post->setUpdateDate(new \Datetime());
+
+	        $entityManager->flush();
+
+	        $session->getFlashBag()->add('success', 'Entry updated');
+	        return $this->redirectToRoute('admin');
+        }
+
+        return $this->render('Admin/editEntry.html.twig', ['Post' => $Post]);
+    }
+
+    /**
+     * @Route("/delete-entry/{id}", name="delete-entry")
+     */
+    public function deleteEntryAction($id)
+    {
+
+    	$session = new Session();
+
+        $loggedUser = $session->get('loggedUser');
+        if(empty($loggedUser)){
+        	return $this->redirectToRoute('homepage');
+        }
+
+        if(empty($id)){
+        	return $this->redirectToRoute('admin');
+        }
+
+        $Post = $this->getDoctrine()
+                        ->getRepository(Posts::class)
+                        ->findOneBy(['id' => $id]);
+        $Post->setActive(false);
+
+		$this->getDoctrine()->getManager()->flush();
+
+        $session->getFlashBag()->add('success', 'Entry deleted');
+        return $this->redirectToRoute('admin');
+
     }
 
     /**

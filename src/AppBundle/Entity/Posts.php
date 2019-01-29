@@ -150,6 +150,21 @@ class Posts
     }
 
     /**
+     * Get insertionDate
+     *
+     * @return \DateTime
+     */
+    public function getFormatedDate()
+    {
+        $createdDate = $this->insertionDate->format('d.m.Y');
+        $todayDate = date('d.m.Y');
+        if($createdDate == $todayDate){
+            return 'Today';
+        }
+        return $createdDate;
+    }
+
+    /**
      * Set updateDate
      *
      * @param \DateTime $updateDate

@@ -225,4 +225,33 @@ class Comments
     {
         return $this->post;
     }
+    /**
+     * @var \DateTime
+     */
+    private $insertionDate = 'CURRENT_TIMESTAMP';
+
+
+    /**
+     * Set insertionDate
+     *
+     * @param \DateTime $insertionDate
+     *
+     * @return Comments
+     */
+    public function setInsertionDate($insertionDate)
+    {
+        $this->insertionDate = $insertionDate;
+
+        return $this;
+    }
+
+    /**
+     * Get insertionDate
+     *
+     * @return \DateTime
+     */
+    public function getInsertionDate()
+    {
+        return $this->insertionDate->format('d.m.Y H:i');
+    }
 }

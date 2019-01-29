@@ -35,7 +35,7 @@ class Comments
     /**
      * @var boolean
      */
-    private $active;
+    private $active = 1;
 
     /**
      * @var integer

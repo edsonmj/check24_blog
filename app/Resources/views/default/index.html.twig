@@ -20,7 +20,7 @@
                 <table border="1">
                     <tr>
                         <td> 
-                            {{ post.getInsertionDate() }} {{ post.getTitle() }}
+                            <a href="{{ path('post', {'id': post.getId()}) }}">{{ post.getFormatedDate() }} {{ post.getTitle() }}</a>
                         </td>
                     </tr>
                     <tr>

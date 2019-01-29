@@ -29,6 +29,7 @@ class LoginController extends Controller
 
             if(!empty($Users)){
                 $session->set('loggedUser', $Users->getId());
+                $session->set('roleUser', $Users->getRole());
                 return $this->redirectToRoute('homepage');
             } else {
                 $session->getFlashBag()->add('error', 'Invalid User or Password');
@@ -48,6 +49,7 @@ class LoginController extends Controller
     {
         $session = new Session();
         $session->remove('loggedUser');
+        $session->remove('roleUser');
         return $this->redirectToRoute('homepage');
     }
 

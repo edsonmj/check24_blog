@@ -4,6 +4,7 @@
     <indexes>
       <index name="fk_Users_Users_idx" columns="created_user_id,updated_user_id"/>
       <index name="fk_Users_UsersUpdate_idx" columns="updated_user_id"/>
+      <index name="fk_Users_Roles_idx" columns="role_id"/>
       <index name="IDX_D5428AEDE104C1D3" columns="created_user_id"/>
     </indexes>
     <id name="id" type="integer" column="id">
@@ -35,6 +36,11 @@
       </options>
     </field>
     <field name="updateDate" type="datetime" column="update_date" nullable="true"/>
+    <many-to-one field="role" target-entity="Roles" fetch="LAZY">
+      <join-columns>
+        <join-column name="role_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
     <many-to-one field="createdUser" target-entity="Users" fetch="LAZY">
       <join-columns>
         <join-column name="created_user_id" referenced-column-name="id"/>

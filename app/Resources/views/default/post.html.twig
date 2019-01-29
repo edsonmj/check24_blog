@@ -15,6 +15,17 @@
     <div class="content">
         {% block message %}
 
+            {% for flashMessage in app.session.flashbag.get('success') %}
+
+                {{ flashMessage }}
+
+            {% endfor %}
+
+            {% for flashMessage in app.session.flashbag.get('error') %}
+
+                {{ flashMessage }}
+
+            {% endfor %}
             
             
             <table border="1">
@@ -37,13 +48,35 @@
             <br />
 
             {% for comment in Comments %}
-                {{ comment.getName() }} said ({{ comment.getInsertionDate() }})
+                {% if comment.getUrl() != NULL %}
+                    <a href="{{ comment.getUrl() }}">{{ comment.getName() }}</a>
+                {% else %}
+                   {{ comment.getName() }}
+                {% endif %}
+                 said ({{ comment.getInsertionDate() }})
                 <br />
                 {{ comment.getComment() }}
                 <br />
 
             {% endfor %}
             
+            <br /> <br />
+
+            Leave a Comment
+
+            <form action="/add-comment/{{ Post.getId() }}" method="POST">
+
+                Name: <input name="name" type="text" />
+                Email (Optional): <input name="email" type="text" />
+                
+                Url (Optional): <input name="url" type="text" />
+                Comment: <textarea name="comment"></textarea>
+                
+                <button type="submit">Send</button>
+
+
+            </form>
+
 
         {% endblock %}
     </div>

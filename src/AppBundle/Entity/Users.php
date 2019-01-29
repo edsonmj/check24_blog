@@ -312,4 +312,33 @@ class Users
     {
         return $this->updatedUser;
     }
+    /**
+     * @var \AppBundle\Entity\Roles
+     */
+    private $role;
+
+
+    /**
+     * Set role
+     *
+     * @param \AppBundle\Entity\Roles $role
+     *
+     * @return Users
+     */
+    public function setRole(\AppBundle\Entity\Roles $role = null)
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * Get role
+     *
+     * @return \AppBundle\Entity\Roles
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
 }
